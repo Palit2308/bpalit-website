@@ -496,45 +496,45 @@ dd { color: var(--text); }
   backdrop-filter: blur(10px);
   box-shadow: 0 20px 40px rgba(0,0,0,0.35);
   pointer-events: auto;
-  z-index: 20;
+  z-index: 9998;
 }
 
-/* Header */
 .chat-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: relative;
+  z-index: 50;                 /* very high inside the chat window */
   padding: 0.75rem 0.9rem;
   border-bottom: 1px solid var(--line);
-  font-size: 0.9rem;
-  position: relative;
-  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .chat-close {
   all: unset;
-  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   display: grid;
   place-items: center;
 
+  cursor: pointer;
   border-radius: 10px;
-  border: 1px solid transparent;
 
+  background: rgba(0,0,0,0.18);
+  border: 1px solid var(--line);
   color: var(--text);
-  opacity: 0.75;
 
-  /* ensures it receives clicks */
+  opacity: 0.9;
+  z-index: 9999;               /* sits above anything in the chat */
   pointer-events: auto;
-  z-index: 30;
 }
 
 .chat-close:hover {
   opacity: 1;
-  border-color: var(--line);
-  background: rgba(0,0,0,0.18);
+  background: rgba(0,0,0,0.28);
 }
 
 /* Body */
