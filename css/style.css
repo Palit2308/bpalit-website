@@ -552,3 +552,55 @@ dd { color: var(--text); }
   }
 }
 
+
+/* =========================
+   RESPONSIVE LAYOUT
+   ========================= */
+
+/* Tablets & small laptops */
+@media (max-width: 1100px) {
+  .grid.dashboard {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .faq-card,
+  .stack-col {
+    grid-column: span 2;
+  }
+}
+
+/* Phones */
+@media (max-width: 700px) {
+  .grid.dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-card,
+  .about-card,
+  .interests-card,
+  .stack-col,
+  .faq-card {
+    grid-column: 1;
+  }
+
+  .chat-teaser {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .bg-art {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  body {
+    font-size: 0.95rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+}
