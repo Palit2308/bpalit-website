@@ -495,7 +495,7 @@ dd { color: var(--text); }
   border-radius: 14px;
   backdrop-filter: blur(10px);
   box-shadow: 0 20px 40px rgba(0,0,0,0.35);
-
+  pointer-events: auto;
   z-index: 20;
 }
 
@@ -507,14 +507,35 @@ dd { color: var(--text); }
   padding: 0.75rem 0.9rem;
   border-bottom: 1px solid var(--line);
   font-size: 0.9rem;
+  position: relative;
+  z-index: 25;
 }
 
 .chat-close {
   all: unset;
   cursor: pointer;
-  opacity: 0.7;
+
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+
+  border-radius: 10px;
+  border: 1px solid transparent;
+
+  color: var(--text);
+  opacity: 0.75;
+
+  /* ensures it receives clicks */
+  pointer-events: auto;
+  z-index: 30;
 }
-.chat-close:hover { opacity: 1; }
+
+.chat-close:hover {
+  opacity: 1;
+  border-color: var(--line);
+  background: rgba(0,0,0,0.18);
+}
 
 /* Body */
 .chat-body {
