@@ -415,12 +415,14 @@ stroke="url(#fade-gradient)" />
 </aside>
 <!-- Row 3, Col 4: Chat teaser -->
 
-<!-- Floating chat window (hidden by default) -->
-<div class="chat-window" hidden>
+<button class="chat-min" aria-label="Open assistant chat">A</button>
+
+<!-- Floating chat window (starts closed) -->
+<div class="chat-window" aria-hidden="true">
   <div class="chat-header">
-  <span>Assistant</span>
-  <button type="button" class="chat-close" aria-label="Close chat">✕</button>
-</div>
+    <span>Assistant</span>
+    <button type="button" class="chat-close" aria-label="Close chat">✕</button>
+  </div>
 
   <div class="chat-body">
     <div class="chat-msg assistant">
@@ -428,13 +430,39 @@ stroke="url(#fade-gradient)" />
     </div>
   </div>
 
-  <form class="chat-input">
+  <div class="chat-input">
     <input type="text" placeholder="Type your message…" disabled />
-  </form>
+  </div>
 </div>
-<!-- Minimized chat launcher (hidden by default) -->
-<button class="chat-min" hidden aria-label="Open assistant chat">A</button>
   </section>
 </main>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const chatWindow = document.querySelector('.chat-window');
+    const chatMin = document.querySelector('.chat-min');
+
+    // Open chat when clicking the A box
+    chatMin.addEventListener('click', () => {
+      chatWindow.classList.add('is-open');
+      chatMin.classList.add('is-hidden');
+    });
+
+    // Close chat when clicking X
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.chat-close')) {
+        chatWindow.classList.remove('is-open');
+        chatMin.classList.remove('is-hidden');
+      }
+    });
+
+    // Optional: press Escape to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        chatWindow.classList.remove('is-open');
+        chatMin.classList.remove('is-hidden');
+      }
+    });
+  });
+</script>
 </body>
 </html>
