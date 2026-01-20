@@ -544,7 +544,36 @@ dd { color: var(--text); }
   color: var(--muted);
   font-family: inherit;
 }
+/* Minimized chat button */
+.chat-min {
+  position: fixed;
+  right: var(--edge-x, clamp(1rem, 3vw, 3rem));
+  bottom: var(--edge-y, clamp(1rem, 2vw, 2rem));
 
+  width: 44px;
+  height: 44px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(0,0,0,0.35);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1.05rem;
+
+  backdrop-filter: blur(10px);
+  box-shadow: 0 16px 34px rgba(0,0,0,0.35);
+
+  cursor: pointer;
+  z-index: 20;
+  opacity: 0.9;
+}
+
+.chat-min:hover {
+  opacity: 1;
+}
 /* @media (max-width: 900px) {
   .grid.dashboard {
     grid-template-columns: 1fr;
