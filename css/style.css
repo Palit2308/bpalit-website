@@ -16,6 +16,20 @@
   --hedge_text-scale: 2.0;
   --tree-scale: 1;
   --lyric-scale: 1.5;
+  /* Global spacing scale */
+  --edge-x: clamp(1rem, 3vw, 3rem);   /* your shell side padding already uses this */
+  --edge-y: clamp(1rem, 2vw, 2rem);
+
+  /* Background anchor offsets (convert your old px to responsive equivalents) */
+  --bg-left: clamp(28px, 3vw, 48px);       /* was ~44–48px */
+  --bg-top: clamp(60px, 6vw, 110px);       /* was 110px */
+  --bg-bottom: clamp(40px, 6vw, 70px);     /* was 70px */
+  --bg-right-wide: clamp(220px, 30vw, 700px); /* was 700px (lyrics) */
+  --bg-right-mid: clamp(70px, 6vw, 250px);    /* was 250px (tree) */
+
+  /* Chat sizing */
+  --chat-w: clamp(240px, 22vw, 320px);
+  --chat-h: clamp(220px, 30vh, 420px);
 }
 
 body {
@@ -61,58 +75,58 @@ body {
   will-change: transform;        /* smoother transforms */
 }
 
-/* Use clamp so size stays "similar" on different screens */
 .diffusion-topleft {
   width: clamp(280px, 26vw, 520px);
-  left: 48px;        /* fixed anchor */
-  top: 110px;        /* fixed anchor */
+  left: var(--bg-left);
+  top: var(--bg-top);
   transform: rotate(-20deg);
 }
 
 .math-bottomleft {
   width: clamp(420px, 34vw, 760px);
-  left: 44px;
-  bottom: 70px;
+  left: var(--bg-left);
+  bottom: var(--bg-bottom);
   transform: rotate(-6deg);
   opacity: 0.8;
 }
 
 .hedge-bottomleft {
   width: clamp(420px, 32vw, 720px);
-  left: 260px;
-  bottom: 70px;
+  left: clamp(140px, 16vw, 260px);   /* was 260px */
+  bottom: var(--bg-bottom);
   transform: rotate(-6deg);
   opacity: 0.8;
 }
 
 .hedge-text {
   width: clamp(520px, 44vw, 980px);
-  left: 260px;
-  bottom: 70px;
+  left: clamp(140px, 16vw, 260px);   /* was 260px */
+  bottom: var(--bg-bottom);
   transform: rotate(-6deg);
   opacity: 0.8;
 }
 
 .tree-bottomleft {
   width: clamp(360px, 30vw, 680px);
-  right: 250px;
-  bottom: 70px;
+  right: var(--bg-right-mid);        /* was 250px */
+  bottom: var(--bg-bottom);
   transform: rotate(-6deg);
   opacity: 0.8;
 }
 
 .lyrics-topright {
   width: clamp(360px, 30vw, 720px);
-  right: 700px;
-  top: 70px;
+  right: var(--bg-right-wide);       /* was 700px */
+  top: clamp(30px, 6vw, 70px);       /* was 70px */
   transform: rotate(8deg);
   opacity: 0.18;
   filter: blur(0.25px);
 }
+
 .coffee-topright {
   width: clamp(240px, 22vw, 460px);
-  right: 70px;
-  top: 120px;
+  right: clamp(20px, 5vw, 70px);     /* was 70px */
+  top: clamp(60px, 10vw, 120px);     /* was 120px */
   transform: rotate(-8deg);
   opacity: 0.8;
   filter: blur(0.25px);
@@ -467,10 +481,11 @@ dd { color: var(--text); }
 /* --- Floating chat window --- */
 .chat-window {
   position: fixed;
-  right: clamp(1rem, 3vw, 3rem);
-  bottom: clamp(1rem, 3vw, 3rem);
-  width: 250px;
-  max-height: 200px;
+  right: var(--edge-x);
+  bottom: var(--edge-y);
+
+  width: var(--chat-w);
+  max-height: var(--chat-h);
 
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -530,7 +545,7 @@ dd { color: var(--text); }
   font-family: inherit;
 }
 
-@media (max-width: 900px) {
+/* @media (max-width: 900px) {
   .grid.dashboard {
     grid-template-columns: 1fr;
   }
@@ -549,8 +564,8 @@ dd { color: var(--text); }
 
   .empty-col {
     display: none; /* hide empty column on mobile */
-  }
-}
+  /* } */
+/* } */ 
 
 
 /* =========================
