@@ -1,0 +1,554 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg1: #0b1d2a;
+  --bg2: #102a3a;
+  --panel: rgba(0, 0, 0, 0.22);
+  --panel-2: rgba(0, 0, 0, 0.30);
+  --line: rgba(255, 255, 255, 0.10);
+  --text: #ffffff;
+  --muted: rgba(255, 255, 255, 0.70);
+  --diffusion-scale: 1;
+  --math-scale: 1.5;
+  --hedge-scale: 1.2;
+  --hedge_text-scale: 2.0;
+  --tree-scale: 1;
+  --lyric-scale: 1.5;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(1200px 600px at 20% 10%, rgba(120, 180, 255, 0.10), transparent 55%),
+              radial-gradient(900px 500px at 80% 20%, rgba(80, 150, 255, 0.08), transparent 60%),
+              linear-gradient(135deg, var(--bg1), var(--bg2));
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 0.4px;
+}
+
+/* Neon text */
+.neon {
+  text-shadow:
+    0 0 4px rgba(180, 220, 255, 0.60),
+    0 0 10px rgba(120, 180, 255, 0.40),
+    0 0 20px rgba(80, 140, 255, 0.25);
+}
+
+.muted { color: var(--muted); }
+
+/* Background art layer (behind everything) */
+/* Background art layer */
+.bg-art {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;              /* prevent scrollbars due to rotated svgs */
+}
+
+/* All background SVG doodles */
+.bg-doodle {
+  position: absolute;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.10);
+  stroke-width: 1.2;
+  opacity: 0.4;
+  filter: blur(0.4px);
+  mix-blend-mode: screen;
+  transform-origin: center;
+  will-change: transform;        /* smoother transforms */
+}
+
+/* Use clamp so size stays "similar" on different screens */
+.diffusion-topleft {
+  width: clamp(280px, 26vw, 520px);
+  left: 48px;        /* fixed anchor */
+  top: 110px;        /* fixed anchor */
+  transform: rotate(-20deg);
+}
+
+.math-bottomleft {
+  width: clamp(420px, 34vw, 760px);
+  left: 44px;
+  bottom: 70px;
+  transform: rotate(-6deg);
+  opacity: 0.8;
+}
+
+.hedge-bottomleft {
+  width: clamp(420px, 32vw, 720px);
+  left: 260px;
+  bottom: 70px;
+  transform: rotate(-6deg);
+  opacity: 0.8;
+}
+
+.hedge-text {
+  width: clamp(520px, 44vw, 980px);
+  left: 260px;
+  bottom: 70px;
+  transform: rotate(-6deg);
+  opacity: 0.8;
+}
+
+.tree-bottomleft {
+  width: clamp(360px, 30vw, 680px);
+  right: 250px;
+  bottom: 70px;
+  transform: rotate(-6deg);
+  opacity: 0.8;
+}
+
+.lyrics-topright {
+  width: clamp(360px, 30vw, 720px);
+  right: 700px;
+  top: 70px;
+  transform: rotate(8deg);
+  opacity: 0.18;
+  filter: blur(0.25px);
+}
+.coffee-topright {
+  width: clamp(240px, 22vw, 460px);
+  right: 70px;
+  top: 120px;
+  transform: rotate(-8deg);
+  opacity: 0.8;
+  filter: blur(0.25px);
+}
+/* Top bar */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(8px);
+}
+
+.brand {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tab {
+  text-decoration: none;
+  color: var(--muted);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  transition: 160ms ease;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tab:hover {
+  color: var(--text);
+  border-color: var(--line);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.tab.active {
+  color: var(--text);
+  border-color: rgba(180, 220, 255, 0.35);
+  background: rgba(0, 0, 0, 0.22);
+}
+.tabs > details {
+  display: flex;
+  align-items: center;
+}
+.dropdown {
+  position: relative;
+}
+
+/* Remove default disclosure marker */
+.dropdown > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.dropdown > summary::-webkit-details-marker {
+  display: none;
+}
+.dropdown > summary {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+}
+
+/* Menu */
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 280px;
+
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.6rem;
+
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.28);
+  z-index: 999;
+}
+
+/* Menu links */
+.dropdown-menu a {
+  display: block;
+  padding: 0.45rem 0.6rem;
+  border-radius: 10px;
+
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+/* Hover */
+.dropdown-menu a:hover {
+  background: rgba(0, 0, 0, 0.22);
+  border-color: var(--line);
+}
+
+/* Only show menu when open */
+.dropdown:not([open]) .dropdown-menu {
+  display: none;
+}
+/* Layout shell */
+.shell {
+  position: relative;
+  z-index: 1;
+
+  /* Full-width layout */
+  width: 100%;
+  max-width: none;          /* remove fixed max width */
+  margin: 0;                /* no centering or left-only margin */
+
+  /* Equal breathing space left + right */
+  padding: 1.5rem clamp(1rem, 3vw, 3rem) 2.5rem;
+}
+
+/* Cards */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.25rem;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+}
+
+.card-title {
+  font-size: 1.05rem;
+  margin-bottom: 0.85rem;
+  opacity: 0.95;
+}
+
+.divider {
+  height: 1px;
+  background: var(--line);
+  margin: 1rem 0;
+}
+
+.intro-card {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;   /* pushes it to the right edge of its column */
+}
+
+/* Intro pinned top-left-ish within content area */
+.intro {
+  width: fit-content;
+  margin: 1.25rem 0;
+  padding: 1.25rem 1.5rem;
+}
+
+.intro h1 { font-size: 1.8rem; }
+.subtitle { margin-top: 0.25rem; opacity: 0.85; }
+
+.grid.dashboard {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1.2fr 1.4fr; /* 4 columns */
+  gap: 1.5rem;
+  align-items: start;
+  grid-auto-rows: min-content; /* rows grow with content */
+}
+
+/* Row 1, Col 1 */
+.intro-card {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start; /* keep it at left of its column */
+}
+
+/* Row 2, Col 1 */
+.about-card {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+/* Row 2, Col 2 */
+.interests-card {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Row 2, Col 3 = one grid cell that stacks two cards */
+.stack-col {
+  grid-column: 3;
+  grid-row: 2;
+
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+/* Row 2, Col 4: FAQ card */
+.faq-card {
+  grid-column: 4;
+  grid-row: 2;
+}
+.faq-card .muted {
+  opacity: 0.9;
+}
+/* About key-value */
+.kv {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.kv-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 0.75rem;
+}
+
+dt { color: var(--muted); }
+dd { color: var(--text); }
+
+/* Interests list */
+.list {
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+  padding-left: 0;
+  margin: 0;
+}
+
+.list li {
+  display: grid;
+  grid-template-columns: 1.2ch 1fr; /* bullet | content */
+  column-gap: 0.75rem;
+  align-items: start;
+
+  line-height: 1.5;
+  color: #ffffff;
+
+}
+
+/* Custom terminal bullet */
+.list li::before {
+  content: ">";
+  color: rgba(180, 220, 255, 0.9);
+  text-shadow:
+    0 0 6px rgba(120, 180, 255, 0.45);
+}
+
+/* Links inside list */
+.list a {
+  color: #ffffff;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(180, 220, 255, 0.6);
+  padding-bottom: 1px;
+}
+
+/* Link hover */
+.list a:hover {
+  border-bottom-color: rgba(180, 220, 255, 1);
+  text-shadow:
+    0 0 6px rgba(120, 180, 255, 0.6);
+}
+
+/* Optional: subtle hover feedback per item */
+.list li:hover::before {
+  color: rgba(200, 235, 255, 1);
+}
+
+/* Optional: slight glow on hover */
+.list li:hover {
+  text-shadow:
+    0 0 4px rgba(120, 180, 255, 0.25);
+}
+
+.nowrap {
+  white-space: nowrap;
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+/* Triangular bullets links */
+.tri {
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+  padding-left: 0;
+}
+
+/* Each list item = bullet column + content column */
+.tri li {
+  display: grid;
+  grid-template-columns: 1.4ch 1fr; /* bullet | text */
+  column-gap: 0.75rem;
+  align-items: start;
+  line-height: 1.5;
+}
+
+/* Bullet */
+.tri li::before {
+  content: "▸";
+  color: rgba(180, 220, 255, 0.95);
+  text-shadow:
+    0 0 6px rgba(120, 180, 255, 0.45);
+}
+
+.tri a {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(255,255,255,0.25);
+  padding-bottom: 2px;
+}
+
+.tri a:hover {
+  border-bottom-color: rgba(180, 220, 255, 0.75);
+}
+
+.hint { margin-top: 0.9rem; font-size: 0.9rem; opacity: 0.85; }
+
+/* --- Chat teaser card --- */
+.chat-teaser {
+  grid-column: 4;
+  grid-row: 3;
+  align-self: end;
+}
+
+.chat-open {
+  all: unset;
+  cursor: pointer;
+  width: 100%;
+}
+
+.chat-preview {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.chat-title {
+  font-size: 1rem;
+}
+
+.chat-sub {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* --- Floating chat window --- */
+.chat-window {
+  position: fixed;
+  right: clamp(1rem, 3vw, 3rem);
+  bottom: clamp(1rem, 3vw, 3rem);
+  width: 250px;
+  max-height: 200px;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+
+  background: rgba(0,0,0,0.35);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+
+  z-index: 20;
+}
+
+/* Header */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+
+.chat-close {
+  all: unset;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.chat-close:hover { opacity: 1; }
+
+/* Body */
+.chat-body {
+  padding: 0.75rem;
+  overflow-y: auto;
+  font-size: 0.85rem;
+}
+
+.chat-msg {
+  background: rgba(255,255,255,0.05);
+  padding: 0.6rem 0.7rem;
+  border-radius: 10px;
+  max-width: 85%;
+  line-height: 1.4;
+}
+
+/* Input */
+.chat-input {
+  border-top: 1px solid var(--line);
+  padding: 0.6rem;
+}
+.chat-input input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--muted);
+  font-family: inherit;
+}
+
+@media (max-width: 900px) {
+  .grid.dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-card,
+  .about-card,
+  .interests-card,
+  .stack-col,
+  .empty-col {
+    grid-column: 1;
+  }
+
+  .intro {
+    width: 100%;
+  }
+
+  .empty-col {
+    display: none; /* hide empty column on mobile */
+  }
+}
+
