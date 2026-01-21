@@ -60,6 +60,9 @@ stroke="url(#fade-gradient)" />
      viewBox="0 0 620 220"
      aria-hidden="true">
 
+  <!-- a faint underline / divider -->
+  <!-- <path d="M20 55 L600 55" opacity="0.5"/> -->
+
   <!-- Title -->
   <text x="22" y="40" font-size="18">Y = Xβ + u</text>
 
@@ -76,6 +79,7 @@ stroke="url(#fade-gradient)" />
 <svg class="bg-doodle hedge hedge-bottomleft"
      viewBox="0 0 620 220"
      aria-hidden="true">
+
 
   <!-- Linear projection "plane" (a slanted parallelogram) -->
   <path d="M90 120 L260 90 L360 130 L190 160 Z" stroke="url(#fade-gradient)"></path>/>
@@ -148,6 +152,7 @@ stroke="url(#fade-gradient)" />
      viewBox="0 0 420 660"
      aria-hidden="true">
 
+  <!-- You paste the lyrics lines yourself here -->
   <text x="0" y="40"  font-size="16">To those who can hear me, I say - do not despair.</text>
   <text x="0" y="70"  font-size="16">The misery that is now upon us is but the passing of greed</text>
   <text x="0" y="100" font-size="16">The bitterness of men who fear the way of human progress.</text>
@@ -162,7 +167,6 @@ stroke="url(#fade-gradient)" />
   <text x="0" y="3700" font-size="16">Let us use that power - let us all unite.</text>
 
 </svg>
-
 <!-- Top-right: coffee beans + french press (ambient doodle) -->
 <svg class="bg-doodle coffee coffee-topright"
      viewBox="0 0 520 320"
@@ -170,18 +174,23 @@ stroke="url(#fade-gradient)" />
 
   <!-- Coffee beans -->
   <g opacity="0.9">
+    <!-- bean 1 -->
     <ellipse cx="90" cy="90" rx="26" ry="18" transform="rotate(-18 90 90)" />
     <path d="M78 84 Q90 90 102 96" fill="none" />
 
+    <!-- bean 2 -->
     <ellipse cx="145" cy="130" rx="24" ry="16" transform="rotate(12 145 130)" />
     <path d="M134 125 Q145 130 156 136" fill="none" />
 
+    <!-- bean 3 -->
     <ellipse cx="120" cy="185" rx="22" ry="15" transform="rotate(-8 120 185)" />
     <path d="M110 180 Q120 185 130 190" fill="none" />
 
+    <!-- bean 4 -->
     <ellipse cx="65" cy="170" rx="20" ry="14" transform="rotate(22 65 170)" />
     <path d="M56 165 Q65 170 74 176" fill="none" />
 
+    <!-- small scattered beans -->
     <ellipse cx="190" cy="95" rx="14" ry="10" transform="rotate(-10 190 95)" />
     <path d="M184 92 Q190 95 196 99" fill="none" />
 
@@ -191,6 +200,7 @@ stroke="url(#fade-gradient)" />
 
   <!-- French press -->
   <g opacity="0.9">
+    <!-- glass body -->
     <path d="M310 70
              Q290 78 292 98
              L300 230
@@ -201,31 +211,37 @@ stroke="url(#fade-gradient)" />
              Q440 78 420 70
              Z" fill="none" />
 
+    <!-- liquid level -->
     <path d="M302 200 L428 200" />
 
+    <!-- frame / band -->
     <path d="M294 110 L436 110" />
     <path d="M296 150 L434 150" />
 
+    <!-- handle -->
     <path d="M438 120
              Q470 128 472 160
              Q470 192 440 200" fill="none" />
 
+    <!-- spout -->
     <path d="M300 78 Q292 70 282 70" fill="none" />
 
+    <!-- lid -->
     <path d="M300 70 L438 70" />
     <path d="M320 52 L418 52" />
     <path d="M332 52 L332 70" />
     <path d="M406 52 L406 70" />
 
+    <!-- plunger rod -->
     <path d="M369 20 L369 70" />
 
+    <!-- knob -->
     <circle cx="369" cy="16" r="8" fill="none" />
   </g>
 
 </svg>
 
  </div>
-
   <!-- Top Nav -->
   <header class="topbar">
     <div class="brand neon">bp://dashboard</div>
@@ -249,83 +265,77 @@ stroke="url(#fade-gradient)" />
 
   <!-- Main -->
   <main class="shell">
-    <section class="grid dashboard">
+ <!-- ONE Dashboard grid (4 columns) -->
+  <section class="grid dashboard">
 
-      <!-- (1,1) Intro -->
-      <section class="intro card intro-card">
-        <h1 class="neon">Hi, I’m Biswajit.</h1>
-        <p class="subtitle neon">This is the filtration I generate.</p>
-      </section>
+    <!-- Row 1, Col 1: Intro -->
+    <section class="intro card intro-card">
+      <h1 class="neon">Hi, I’m Biswajit.</h1>
+      <p class="subtitle neon">Welcome to my terminal.</p>
+    </section>
 
-      <!-- (2,1) About -->
-      <article class="card about-card">
-        <h2 class="card-title neon">About</h2>
+    <!-- Row 2, Col 1: About -->
+    <article class="card about-card">
+      <h2 class="card-title neon">About</h2>
 
-        <dl class="kv">
-          <div class="kv-row">
-            <dt>Name</dt>
-            <dd>Biswajit Palit</dd>
-          </div>
-          <div class="kv-row">
-            <dt>City</dt>
-            <dd>Kiel, Germany</dd>
-          </div>
-          <div class="kv-row">
-            <dt>DoB</dt>
-            <dd>23.08.2001</dd>
-          </div>
-          <div class="kv-row">
-            <dt>pronouns</dt>
-            <dd>he/him</dd>
-          </div>
-        </dl>
+      <dl class="kv">
+        <div class="kv-row">
+          <dt>Name</dt>
+          <dd>Biswajit Palit</dd>
+        </div>
+        <div class="kv-row">
+          <dt>City</dt>
+          <dd>Kiel, Germany</dd>
+        </div>
+        <div class="kv-row">
+          <dt>DoB</dt>
+          <dd>23.08.2001</dd>
+        </div>
+        <div class="kv-row">
+          <dt>pronouns</dt>
+          <dd>he/him</dd>
+        </div>
+      </dl>
 
-        <div class="divider"></div>
+      <div class="divider"></div>
 
-        <p class="bio">
-          <span class="muted">Bio:</span>
-          <br />
-          <span class="muted">
-            Hi, I am originally from India. I study a lot of math (evidently). Also a lot of nerdy computer stuff. 
-            I find writing an essay hard, so lets settle for a dashboard. 
-          </span>
-        </p>
-      </article>
+      <p class="bio">
+        <span class="muted">Bio:</span>
+        <br />
+        <span class="muted">
+          Hi, I am originally from India. I study a lot of math (evidently). Also a lot of nerdy computer stuff. 
+          I find writing an essay hard, so lets settle for a dashboard. 
+        </span>
+      </p>
+    </article>
 
-      <!-- (2,2) Professional Aspirations (placeholder for now) -->
-      <article class="card aspirations-card">
-        <h2 class="card-title neon">Professional Aspirations</h2>
-        <ul class="tri">
-          <li><span class="li-text">My ideal position would look like a research team lead for a hedge fund.</span></li>
-          <li><span class="li-text">I enjoy the financial domain and want to explore depths of it. Have got a solid base of econometrics to compliment it.</span></li>
-          <li><span class="li-text">Want to contribute to more than just generating alpha (whatever that entails).</span></li>
-        </ul>
-      </article>
+    <!-- Row 2, Col 2: Interests -->
+    <!-- IMPORTANT: fix the class name to interests-card so CSS can target it -->
+    <article class="card interests-card">
+      <h2 class="card-title neon">Interests</h2>
+      <ul class="list">
+        <li><span class="li-text">Aspiring quant researcher</span></li>
 
-      <!-- (3,2) General Interests & Hobbies = your existing Interests card (moved here, content unchanged) -->
-      <article class="card interests-card hobbies-card">
-        <h2 class="card-title neon">Hobbies</h2>
-        <ul class="tri">
-          <li>
-            <span class="li-text">
-              Enjoy rock and metal music,&nbsp;
-              <span class="nowrap">
-                playlist:
-                <a href="https://open.spotify.com/playlist/37i9dQZF1EQpj7X7UK8OOF"
-                   target="_blank" rel="noopener">spotify</a>
-              </span>
+        <li>
+          <span class="li-text">
+            Enjoy rock and metal music,&nbsp;
+            <span class="nowrap">
+              playlist:
+              <a href="https://open.spotify.com/playlist/37i9dQZF1EQpj7X7UK8OOF"
+                 target="_blank" rel="noopener">spotify</a>
             </span>
-          </li>
+          </span>
+        </li>
 
-          <li><span class="li-text">Love to code my way through life</span></li>
-          <li><span class="li-text">Netflix, computer hardware, football</span></li>
-          <li><span class="li-text">Everything on aviation industry. </span></li>
-        </ul>
-      </article>
+        <li><span class="li-text">Love to code my way through life</span></li>
+        <li><span class="li-text">Netflix, computer hardware, football</span></li>
+      </ul>
+    </article>
 
-      <!-- (2,3) Current work status = your existing "How it's going" card (moved here, content unchanged) -->
-      <aside class="card contact-card current-card">
-        <h2 class="card-title neon">Currently...</h2>
+    <!-- Row 2, Col 3: One cell that contains TWO stacked cards -->
+    <div class="stack-col">
+      <aside class="card contact-card">
+        <h2 class="card-title neon">How it's going</h2>
         <ul class="tri">
           <li>
             <span class="li-text">
@@ -342,24 +352,23 @@ stroke="url(#fade-gradient)" />
               <span class="nowrap">
                 <a href="https://www.pecan-climate.org/team"
                    target="_blank" rel="noopener"> HU</a>
-                 in Berlin. 
+                   in Berlin. 
               </span>
             </span>
           </li>
-          <li><span class="li-text">Going to Warsaw School Of Economics for exchange semester WiSe 26'27.</span></li>
+          <li><span class="li-text">Got accepted to Warsaw School Of Economics for exchange semester WiSe 26'27.</span></li>
         </ul>
       </aside>
 
-      <!-- (3,3) Quick Links = your existing Quick Links card (moved here, content unchanged) -->
-      <aside class="card status-card links-card">
+      <aside class="card status-card">
         <h2 class="card-title neon">Quick Links</h2>
-        <ul class="tri">
+        <ul class="list">
           <li>
             <span class="li-text">
               <span class="nowrap">
                 <a href="assets/Master_Thesis_Final.pdf"
                    target="_blank" rel="noopener"> When Nature Makes the News</a>
-                 (Master Thesis). 
+                   (Master Thesis). 
               </span>
             </span>
           </li>
@@ -376,123 +385,79 @@ stroke="url(#fade-gradient)" />
               <span class="nowrap">
                 <a href="https://www.youtube.com/@veritasium"
                    target="_blank" rel="noopener"> Veritasium</a> 
-                (love them)
-              </span>
-            </span>
-          </li>
-          <li>
-            <span class="li-text">
-              <span class="nowrap">
-                <a href="https://www.avantto.com.br/en/blog/aero/a-nova-era-supersonica-esta-chegando/"
-                   target="_blank" rel="noopener"> Mach 1.9 back in commercial flying</a> 
-                in 2029.
+                  (love them)
               </span>
             </span>
           </li>
         </ul>
       </aside>
-
-      <!-- (4,3) Technical Skills (placeholder for now) -->
-      <article class="card skills-card">
-        <h2 class="card-title neon">Toolkit</h2>
-        <ul class="tri">
-          <li><span class="li-text">Python (pysql), R, MATLAB, Stata</span></li>
-          <li><span class="li-text">Git, Html, Snakemake</span></li>
-          <li><span class="li-text">Languages: English, German(A1)</span></li>
-        </ul>
-      </article>
-
-      <!-- (2,4) FAQ (unchanged content) -->
-      <aside class="card faq-card">
-        <h2 class="card-title neon">FAQ</h2>
-
-        <ul class="tri">
-          <li>
-            <span class="li-text">
-              <span class="muted">Why a MSc QF after MSc Econ?</span><br />
-              Always had a deep passion for financial markets. After econometrics at Uni Bonn, felt drawn to understanding the math behind the markets.
-            </span>
-          </li>
-
-          <li>
-            <span class="li-text">
-              <span class="muted">But why not a PhD in Financial Economics?</span><br />
-              Still in the phase of learning stochastic dynamics. Let's see where life takes us now.
-            </span>
-          </li>
-        </ul>
-      </aside>
-
-      <!-- (3,4) Interesting stuff (placeholder) -->
-      <aside class="card interesting-card">
-        <h2 class="card-title neon">Interesting stuff</h2>
-        <ul class="tri">
-          <li><span class="li-text"><span class="muted">"EconoPhysics"</span><br />Consider market prices flowing through the probability space over time. 
-          <a href="assets/Action in Markets.pdf"
-                   target="_blank" rel="noopener"> Mannhire (2021)</a> explores whether the prices follow the path of least action(quadratic loss). Theoritical
-                  models converge!!! Several pricing possibilities, yayy!  </span></li>
-          <li><span class="li-text"><span class="muted">"37"</span><br />Apparantly the colour blue is related to the number 37, that's why its most people's favourite colour.
-            Statistically, 37 and 73 are among the most commonly chosen random number between 1 and 100. How random are random numbers then really?</span></li>
-        </ul>
-      </aside>
-
-      <!-- (4,4) Daily Coffee Count (placeholder) -->
-      <aside class="card coffee-count-card">
-        <h2 class="card-title neon">Daily Coffee Count</h2>
-        <p class="muted">I love to drink coffee. Easily 3 cups a day. But that does not mean that this card belongs here. It's simply a placeholder to make the fourth column
-          a filtration. Still thinking what to put here. 
-        </p>
-      </aside>
-
-      <!-- (5,4) Schedule an appointment (placeholder) -->
-      <aside class="card calendar-card">
-        <h2 class="card-title neon">Schedule an appointment</h2>
-        <p class="muted">
-          Let's schedule a meeting here
-          <br />
-          <a href="https://calendar.google.com/calendar/u/0/r/day?hl=en"
-                   target="_blank" rel="noopener"> Google Calender</a> 
-        </p>
-      </aside>
-
-    </section>
-  </main>
-
-  <!-- Assistant launcher stays fixed -->
-  <button class="chat-min" aria-label="Open assistant chat">A</button>
-
-  <!-- Floating chat window (starts closed) -->
-  <div class="chat-window" aria-hidden="true">
-    <div class="chat-header">
-      <span>a(I) can help</span>
-      <button type="button" class="chat-close" aria-label="Close chat">✕</button>
     </div>
 
-    <div class="chat-body">
-      <div class="chat-msg assistant">
-        Hi! Feel free to ask me anything about my work or background.
-      </div>
-    </div>
+    <!-- Row 2, Col 4: empty column placeholder -->
+    <aside class="card faq-card">
+  <h2 class="card-title neon">FAQ</h2>
 
-    <div class="chat-input">
-      <input type="text" placeholder="Type your message…" />
+  <ul class="tri">
+    <li>
+      <span class="li-text">
+        <span class="muted">Why a MSc QF after MSc Econ?</span><br />
+        Always had a deep passion for financial markets. After econometrics at Uni Bonn, felt drawn to understanding the math behind the markets.
+      </span>
+    </li>
+
+    <li>
+      <span class="li-text">
+        <span class="muted">But why not a PhD in Financial Economics?</span><br />
+        Still in the phase of learning stochastic dynamics. Let's see where life takes us now.
+      </span>
+    </li>
+    <li>
+      <span class="li-text">
+        <span class="muted">Languages you know?</span><br />
+        Still in the phase of learning stochastic dynamics. Let's see where life takes us now.
+      </span>
+    </li>
+  </ul>
+</aside>
+<!-- Row 3, Col 4: Chat teaser -->
+
+<button class="chat-min" aria-label="Open assistant chat">A</button>
+
+<!-- Floating chat window (starts closed) -->
+<div class="chat-window" aria-hidden="true">
+  <div class="chat-header">
+    <span>Assistant</span>
+    <button type="button" class="chat-close" aria-label="Close chat">✕</button>
+  </div>
+
+  <div class="chat-body">
+    <div class="chat-msg assistant">
+      Hi! Feel free to ask me anything about my work or background.
     </div>
   </div>
 
+  <div class="chat-input">
+    <input type="text" placeholder="Type your message…" disabled />
+  </div>
+</div>
+  </section>
+</main>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const chatWindow = document.querySelector('.chat-window');
     const chatMin = document.querySelector('.chat-min');
 
-    // A stays visible always; click A to open chat
+    // Open chat when clicking the A box
     chatMin.addEventListener('click', () => {
       chatWindow.classList.add('is-open');
+      chatMin.classList.add('is-hidden');
     });
 
     // Close chat when clicking X
     document.addEventListener('click', (e) => {
       if (e.target.closest('.chat-close')) {
         chatWindow.classList.remove('is-open');
+        chatMin.classList.remove('is-hidden');
       }
     });
 
@@ -500,6 +465,7 @@ stroke="url(#fade-gradient)" />
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         chatWindow.classList.remove('is-open');
+        chatMin.classList.remove('is-hidden');
       }
     });
   });

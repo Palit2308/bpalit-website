@@ -313,13 +313,13 @@ body {
   grid-row: 2;
 }
 
-/* Row 2, Col 2 */
+/* Row 2, Col 2
 .interests-card {
   grid-column: 2;
   grid-row: 2;
-}
+} */
 
-/* Row 2, Col 3 = one grid cell that stacks two cards */
+/* Row 2, Col 3 = one grid cell that stacks two cards
 .stack-col {
   grid-column: 3;
   grid-row: 2;
@@ -327,7 +327,7 @@ body {
   display: grid;
   gap: 1rem;
   align-content: start;
-}
+} */
 
 /* Row 2, Col 4: FAQ card */
 .faq-card {
@@ -336,6 +336,54 @@ body {
 }
 .faq-card .muted {
   opacity: 0.9;
+}
+.aspirations-card {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* (3,2) General Interests & Hobbies (you reuse Interests card here) */
+.hobbies-card {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+/* (2,3) Current work status (your existing contact-card) */
+.current-card {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+/* (3,3) Quick Links */
+.links-card {
+  grid-column: 3;
+  grid-row: 3;
+}
+
+/* (4,3) Technical Skills */
+.skills-card {
+  grid-column: 3;
+  grid-row: 4;
+}
+
+/* (2,4) FAQ already set: .faq-card */
+
+/* (3,4) Interesting stuff */
+.interesting-card {
+  grid-column: 4;
+  grid-row: 3;
+}
+
+/* (4,4) Daily Coffee Count */
+.coffee-count-card {
+  grid-column: 4;
+  grid-row: 4;
+}
+
+/* (5,4) Schedule appointment */
+.calendar-card {
+  grid-column: 4;
+  grid-row: 5;
 }
 /* About key-value */
 .kv {
@@ -511,11 +559,11 @@ dd { color: var(--text); }
   pointer-events: auto;
 }
 
-/* Hide A button when chat is open */
+/* Hide A button when chat is open
 .chat-min.is-hidden {
   opacity: 0;
   pointer-events: none;
-}
+} */
 
 /* Header */
 .chat-header {
@@ -610,9 +658,10 @@ dd { color: var(--text); }
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .faq-card,
-  .stack-col {
-    grid-column: span 2;
+  /* IMPORTANT: disable explicit (row,col) placement on smaller screens */
+  .grid.dashboard > * {
+    grid-column: auto !important;
+    grid-row: auto !important;
   }
 }
 
@@ -622,32 +671,24 @@ dd { color: var(--text); }
     grid-template-columns: 1fr;
   }
 
-  .intro-card,
-  .about-card,
-  .interests-card,
-  .stack-col,
-  .faq-card {
-    grid-column: 1;
+  /* IMPORTANT: disable explicit (row,col) placement on phones */
+  .grid.dashboard > * {
+    grid-column: auto !important;
+    grid-row: auto !important;
   }
 
-  .chat-teaser {
-    grid-column: 1;
-    grid-row: auto;
-  }
-}
-
-@media (max-width: 900px) {
-  .bg-art {
-    display: none;
-  }
-}
-
-@media (max-width: 700px) {
   body {
     font-size: 0.95rem;
   }
 
   .card {
     padding: 1rem;
+  }
+}
+
+/* Keep background art off on smaller screens (optional, but good) */
+@media (max-width: 900px) {
+  .bg-art {
+    display: none;
   }
 }
