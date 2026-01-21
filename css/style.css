@@ -357,13 +357,13 @@ body {
 /* (3,3) Quick Links */
 .links-card {
   grid-column: 3;
-  grid-row: 3;
+  grid-row: 4;
 }
 
 /* (4,3) Technical Skills */
 .skills-card {
   grid-column: 3;
-  grid-row: 4;
+  grid-row: 3;
 }
 
 /* (2,4) FAQ already set: .faq-card */
