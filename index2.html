@@ -5,9 +5,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Biswajit | Thought Blog</title>
   <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
 
+  <!-- Markdown renderer (Option A) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    /* Tiny layout helpers, keeps your existing aesthetic */
+    .blog-shell { gap: 16px; }
+
+    .blog-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1.05fr 1.25fr;
+      align-items: start;
+    }
+
+    @media (max-width: 980px) {
+      .blog-grid { grid-template-columns: 1fr; }
+    }
+
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .pill {
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.04);
+      padding: 6px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 0.92rem;
+    }
+    .pill[aria-pressed="true"] {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.28);
+    }
+
+    .post-list { display: grid; gap: 14px; }
+    .post-card { cursor: pointer; }
+    .post-card:hover { transform: translateY(-1px); }
+    .post-meta { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+    .post-date { opacity: 0.75; font-size: 0.92rem; }
+    .tag-mini { opacity: 0.8; font-size: 0.9rem; }
+
+    .reader {
+      min-height: 260px;
+    }
+
+    /* Markdown inside your card */
+    .md h1, .md h2, .md h3 { margin: 0.2rem 0 0.6rem; }
+    .md p { margin: 0.65rem 0; }
+    .md ul { margin: 0.6rem 0 0.6rem 1.2rem; }
+    .md code { padding: 0.1rem 0.25rem; border-radius: 6px; background: rgba(255,255,255,0.06); }
+    .md pre { padding: 12px; border-radius: 14px; overflow: auto; background: rgba(255,255,255,0.06); }
+    .md blockquote {
+      margin: 0.8rem 0;
+      padding: 0.6rem 0.9rem;
+      border-left: 3px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.04);
+      border-radius: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- SAME BACKGROUND (copy from index.html) -->
   <div class="bg-art" aria-hidden="true">
  <!-- topleft: stochastic diffusion path -->
 <svg class="bg-doodle diffusion diffusion-topleft"
@@ -227,9 +287,9 @@ stroke="url(#fade-gradient)" />
 
  </div>
 
-  <!-- Top Nav (same structure, Blog active) -->
+  <!-- Top Nav -->
   <header class="topbar">
-    <div class="brand neon">bp://thoughts</div>
+    <div class="brand neon">bp://thought-blog</div>
 
     <nav class="tabs" aria-label="Primary">
       <a class="tab" href="index.html">Home</a>
@@ -250,97 +310,170 @@ stroke="url(#fade-gradient)" />
     </nav>
   </header>
 
-  <!-- Main Blog Content -->
-  <main class="shell">
+  <main class="shell blog-shell">
     <section class="card">
-  <h1 class="neon">Thought Blog</h1>
-  <p class="muted">Write something. Hit Enter or Send. It becomes a new cell.</p>
+      <h1 class="neon">Thought Blog</h1>
+      <p class="muted">
+        Notes, intuitions, half-formed arguments. Filter by tag, click a post to read.
+      </p>
+      <div class="pill-row" id="tagRow" aria-label="Tag filters"></div>
+    </section>
 
-  <div class="divider"></div>
+    <section class="blog-grid">
+      <!-- Left: list -->
+      <section class="card">
+        <h2 class="card-title neon">Posts</h2>
+        <div class="divider"></div>
+        <div id="postList" class="post-list"></div>
+      </section>
 
-  <div class="composer">
-    <textarea id="thoughtInput" rows="3" placeholder="Type a thought… (Enter to post, Shift+Enter for newline)"></textarea>
-    <button id="sendThought" class="tab" type="button">Send</button>
-  </div>
-</section>
-
-<section id="thoughtFeed" class="thought-feed"></section>
+      <!-- Right: reader -->
+      <section class="card reader">
+        <h2 class="card-title neon" id="readerTitle">Open a post</h2>
+        <p class="muted" id="readerMeta">Click a post on the left.</p>
+        <div class="divider"></div>
+        <div id="readerBody" class="md"></div>
+      </section>
+    </section>
   </main>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const input = document.getElementById('thoughtInput');
-    const sendBtn = document.getElementById('sendThought');
-    const feed = document.getElementById('thoughtFeed');
+  <script>
+    // ---- Config ----
+    const MANIFEST_URL = "posts/index.json";
 
-    const STORAGE_KEY = 'bp_thoughts_v1';
+    // ---- State ----
+    let posts = [];
+    let activeTag = "all";
 
-    function loadThoughts() {
+    // ---- Elements ----
+    const tagRow = document.getElementById("tagRow");
+    const postList = document.getElementById("postList");
+    const readerTitle = document.getElementById("readerTitle");
+    const readerMeta = document.getElementById("readerMeta");
+    const readerBody = document.getElementById("readerBody");
+
+    // ---- Helpers ----
+    function esc(s) {
+      return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+    }
+
+    function sortNewestFirst(arr) {
+      return [...arr].sort((a,b) => (b.date || "").localeCompare(a.date || ""));
+    }
+
+    function getAllTags(allPosts) {
+      const set = new Set();
+      allPosts.forEach(p => (p.tags || []).forEach(t => set.add(t)));
+      return ["all", ...Array.from(set).sort((a,b) => a.localeCompare(b))];
+    }
+
+    function renderTags() {
+      const tags = getAllTags(posts);
+
+      tagRow.innerHTML = "";
+      tags.forEach(tag => {
+        const btn = document.createElement("button");
+        btn.className = "pill";
+        btn.type = "button";
+        btn.textContent = tag;
+        btn.setAttribute("aria-pressed", tag === activeTag ? "true" : "false");
+        btn.addEventListener("click", () => {
+          activeTag = tag;
+          renderTags();
+          renderPostList();
+        });
+        tagRow.appendChild(btn);
+      });
+    }
+
+    function postMatchesTag(p) {
+      if (activeTag === "all") return true;
+      return (p.tags || []).includes(activeTag);
+    }
+
+    function renderPostList() {
+      const view = sortNewestFirst(posts).filter(postMatchesTag);
+
+      if (view.length === 0) {
+        postList.innerHTML = `<p class="muted">No posts for this tag yet.</p>`;
+        return;
+      }
+
+      postList.innerHTML = "";
+      view.forEach(p => {
+        const el = document.createElement("article");
+        el.className = "card post-card";
+        el.tabIndex = 0;
+
+        const tagsInline = (p.tags || []).map(t => `#${esc(t)}`).join(" ");
+
+        el.innerHTML = `
+          <div class="post-meta">
+            <div class="neon">${esc(p.title || p.slug || "Untitled")}</div>
+          </div>
+          <div class="post-meta">
+            <div class="post-date muted">${esc(p.date || "")}</div>
+            <div class="tag-mini muted">${tagsInline}</div>
+          </div>
+        `;
+
+        const open = () => openPost(p);
+        el.addEventListener("click", open);
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") open();
+        });
+
+        postList.appendChild(el);
+      });
+    }
+
+    async function openPost(p) {
+      // update URL hash for shareable links
+      if (p.slug) location.hash = p.slug;
+
+      readerTitle.textContent = p.title || p.slug || "Post";
+      readerMeta.textContent = `${p.date || ""}  •  ${(p.tags || []).join(", ")}`;
+
+      readerBody.innerHTML = `<p class="muted">Loading…</p>`;
+
       try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? [];
-      } catch {
-        return [];
+        const res = await fetch(`posts/${p.file}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const md = await res.text();
+
+        // marked renders markdown -> HTML
+        readerBody.innerHTML = marked.parse(md);
+      } catch (err) {
+        console.error(err);
+        readerBody.innerHTML = `<p class="muted">Could not load this post.</p>`;
       }
     }
 
-    function saveThoughts(thoughts) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(thoughts));
+    function openFromHash() {
+      const slug = (location.hash || "").replace("#", "").trim();
+      if (!slug) return;
+
+      const p = posts.find(x => x.slug === slug);
+      if (p) openPost(p);
     }
 
-    function escapeHtml(str) {
-      return str
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
-    }
+    async function init() {
+      try {
+        const res = await fetch(MANIFEST_URL);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        posts = await res.json();
 
-    function renderThought(thought) {
-      const el = document.createElement('article');
-      el.className = 'card thought-card';
-      el.innerHTML = `
-        <div class="thought-meta muted">${new Date(thought.ts).toLocaleString()}</div>
-        <div class="thought-text">${escapeHtml(thought.text).replaceAll('\n', '<br>')}</div>
-      `;
-      feed.prepend(el);
-    }
-
-    function renderAll() {
-      feed.innerHTML = '';
-      const thoughts = loadThoughts();
-      thoughts.forEach(renderThought);
-    }
-
-    function postThought() {
-      const text = input.value.trim();
-      if (!text) return;
-
-      const thoughts = loadThoughts();
-      const newThought = { id: crypto.randomUUID(), text, ts: Date.now() };
-
-      thoughts.push(newThought);
-      saveThoughts(thoughts);
-
-      renderThought(newThought);
-      input.value = '';
-      input.focus();
-    }
-
-    // Send button
-    sendBtn.addEventListener('click', postThought);
-
-    // Enter to send (Shift+Enter new line)
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        postThought();
+        renderTags();
+        renderPostList();
+        openFromHash();
+      } catch (err) {
+        console.error(err);
+        postList.innerHTML = `<p class="muted">Could not load posts manifest.</p>`;
       }
-    });
+    }
 
-    renderAll();
-  });
-</script>
-
+    window.addEventListener("hashchange", openFromHash);
+    init();
+  </script>
 </body>
 </html>
