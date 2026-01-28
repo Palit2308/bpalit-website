@@ -647,7 +647,37 @@ dd { color: var(--text); }
   /* } */
 /* } */ 
 
+.composer {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
 
+.composer textarea {
+  flex: 1;
+  resize: vertical;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: inherit;
+  font: inherit;
+}
+
+.thought-feed {
+  display: grid;
+  gap: 14px;
+}
+
+.thought-meta {
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+
+.thought-text {
+  line-height: 1.5;
+}
 /* =========================
    RESPONSIVE LAYOUT
    ========================= */

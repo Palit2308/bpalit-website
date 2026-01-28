@@ -244,6 +244,7 @@ stroke="url(#fade-gradient)" />
         <a href="tel:+4915730619761">+49 15730619761</a>
       </div>
     </details>
+     <a class="tab" href="index2.html">Blog</a>
     </nav>
   </header>
 
@@ -472,35 +473,110 @@ stroke="url(#fade-gradient)" />
     </section>
   </main>
 
-  <!-- Assistant launcher stays fixed -->
-  <button class="chat-min" aria-label="Open assistant chat">A</button>
+<!-- Assistant launcher stays fixed -->
+<button class="chat-min" aria-label="Open assistant chat">A</button>
 
-  <!-- Floating chat window (starts closed) -->
-  <div class="chat-window" aria-hidden="true">
-    <div class="chat-header">
-      <span>Can a(I) help ? </span>
-      <button type="button" class="chat-close" aria-label="Close chat">✕</button>
+<!-- Floating chat window (starts closed) -->
+<div class="chat-window" aria-hidden="true">
+  <div class="chat-header">
+    <span>Can a(I) help ? </span>
+    <button type="button" class="chat-close" aria-label="Close chat">✕</button>
+  </div>
+
+  <div class="chat-body">
+    <div class="chat-msg assistant">
+      Feel free to ask me anything about my work or background.
     </div>
-
-    <div class="chat-body">
-      <div class="chat-msg assistant">
-        Feel free to ask me anything about my work or background.
-      </div>
-    </div>
-
-    <div class="chat-input">
-      <input type="text" placeholder="Type your message…" />
+    <div class="chat-msg assistant">
+      Leave your email first, then your message — I’ll get back to you.
     </div>
   </div>
 
+  <div class="chat-input">
+    <input id="chat-email" type="email" placeholder="Your email (so I can reply)" />
+    <input id="chat-message" type="text" placeholder="Type your message…" />
+    <button id="chat-send" type="button">Send</button>
+  </div>
+</div>
+
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const API_BASE = "https://backend.biswajitpalit23-08-01.workers.dev";
+
     const chatWindow = document.querySelector('.chat-window');
     const chatMin = document.querySelector('.chat-min');
+    const chatBody = document.querySelector('.chat-body');
+
+    const emailEl = document.getElementById('chat-email');
+    const msgEl = document.getElementById('chat-message');
+    const sendBtn = document.getElementById('chat-send');
+
+    function addMsg(text, who = "assistant") {
+      const div = document.createElement('div');
+      div.className = `chat-msg ${who}`;
+      div.textContent = text;
+      chatBody.appendChild(div);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    async function sendLead() {
+      const email = (emailEl.value || "").trim();
+      const message = (msgEl.value || "").trim();
+
+      if (!email) {
+        addMsg("Please enter your email first :)", "assistant");
+        emailEl.focus();
+        return;
+      }
+
+      // super light email sanity check
+      if (!email.includes("@")) {
+        addMsg("That email looks off — can you check it?", "assistant");
+        emailEl.focus();
+        return;
+      }
+
+      if (!message) {
+        addMsg("Write a message and hit Send (or press Enter).", "assistant");
+        msgEl.focus();
+        return;
+      }
+
+      // show user's message in the chat
+      addMsg(message, "user");
+
+      // optimistic UI feedback
+      addMsg("Got it — sending…", "assistant");
+
+      try {
+        const res = await fetch(`${API_BASE}/lead`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email,
+            message,
+            page_url: window.location.href
+          })
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        // clear message box, keep email for convenience
+        msgEl.value = "";
+
+        addMsg("Thanks — your message has been forwarded to Biswajit. :)", "assistant");
+      } catch (err) {
+        console.error(err);
+        addMsg("Hmm, something went wrong sending that. Please try again.", "assistant");
+      }
+    }
 
     // A stays visible always; click A to open chat
     chatMin.addEventListener('click', () => {
       chatWindow.classList.add('is-open');
+      msgEl?.focus();
     });
 
     // Close chat when clicking X
@@ -516,7 +592,19 @@ stroke="url(#fade-gradient)" />
         chatWindow.classList.remove('is-open');
       }
     });
+
+    // Send on button click
+    sendBtn.addEventListener('click', sendLead);
+
+    // Press Enter in message field to send
+    msgEl.addEventListener('keydown', (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        sendLead();
+      }
+    });
   });
 </script>
+
 </body>
 </html>
