@@ -3,7 +3,14 @@
     "slug": "first-post",
     "title": "First Entry",
     "date": "2026-01-28",
-    "tags": ["meta", "writing"],
+    "tags": ["meta"],
     "file": "2026-01-28-first-post.md"
+  },
+  {
+    "slug": "music-rant-album",
+    "title": "Thoughts on Rock",
+    "date": "2026-01-28",
+    "tags": ["music", "random"],
+    "file": "2026-01-28-music.md"
   }
 ]
